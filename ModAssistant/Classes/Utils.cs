@@ -32,7 +32,7 @@ namespace ModAssistant
             public const string BeatModsVersions_beatmods = "https://versions.beatmods.com/versions.json";
             public const string BeatModsAlias_beatmods = "https://alias.beatmods.com/aliases.json";
             public const string WeebCDNAPIURL_beatmods = "https://pat.assistant.moe/api/v1.0/";
-            public const string BeatModsTranslation_beatmods = "https://beatmodstranslation.wgzeyu.vip/zh-Hans.json";
+            public const string BeatModsTranslation_beatmods = "https://wgzeyu.github.io/BeatSaberModListTranslationRepo/zh-Hans.json";
 
             public const string BeatModsAPIUrl_wgzeyu = "https://beatmods.wgzeyu.com/api/v1/";
             public const string TeknikAPIUrl_wgzeyu = "https://beatmods.wgzeyu.com/teknik/v1/";
