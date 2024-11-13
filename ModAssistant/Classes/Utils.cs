@@ -32,7 +32,7 @@ namespace ModAssistant
             public const string BeatModsVersions_beatmods = "https://versions.beatmods.com/versions.json";
             public const string BeatModsAlias_beatmods = "https://alias.beatmods.com/aliases.json";
             public const string WeebCDNAPIURL_beatmods = "https://pat.assistant.moe/api/v1.0/";
-            public const string BeatModsTranslation_beatmods = "https://beatmodstranslation.wgzeyu.vip/zh-Hans.json";
+            public const string BeatModsTranslation_beatmods = "https://wgzeyu.github.io/BeatSaberModListTranslationRepo/zh-Hans.json";
 
             public const string BeatModsAPIUrl_wgzeyu = "https://beatmods.wgzeyu.com/api/v1/";
             public const string TeknikAPIUrl_wgzeyu = "https://beatmods.wgzeyu.com/teknik/v1/";
@@ -321,43 +321,64 @@ namespace ModAssistant
             return null;
         }
 
-        public static string GetVersion()
+        public static async Task<string> GetVersion()
         {
+            string result = string.Empty;
+
+            var versions = await GetAllPossibleVersions();
+
             string filename = Path.Combine(App.BeatSaberInstallDirectory, "Beat Saber_Data", "globalgamemanagers");
             using (var stream = File.OpenRead(filename))
-            using (var reader = new BinaryReader(stream, Encoding.UTF8))
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
-                const string key = "public.app-category.games";
-                int pos = 0;
+                var line = reader.ReadLine();
 
-                while (stream.Position < stream.Length && pos < key.Length)
+                while (line != null)
                 {
-                    if (reader.ReadByte() == key[pos]) pos++;
-                    else pos = 0;
+                    foreach (var version in versions)
+                    {
+                        if (line.Contains(version))
+                        {
+                            result = version;
+                            break;
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(result)) break;
+                    line = reader.ReadLine();
                 }
 
-                if (stream.Position == stream.Length) // we went through the entire stream without finding the key
-                    return null;
-
-                while (stream.Position < stream.Length)
-                {
-                    var current = (char)reader.ReadByte();
-                    if (char.IsDigit(current))
-                        break;
-                }
-
-                var rewind = -sizeof(int) - sizeof(byte);
-                stream.Seek(rewind, SeekOrigin.Current); // rewind to the string length
-
-                var strlen = reader.ReadInt32();
-                var strbytes = reader.ReadBytes(strlen);
-
-                var version = Encoding.UTF8.GetString(strbytes);
-
-                //There is one version ending in "p1" on BeatMods
-                var filteredVersionMatch = Regex.Match(version, @"[\d]+.[\d]+.[\d]+(p1)?");
-                return filteredVersionMatch.Success ? filteredVersionMatch.Value : version;
+                ////There is one version ending in "p1" on BeatMods
+                var filteredVersionMatch = Regex.Match(result, @"[\d]+.[\d]+.[\d]+(p1)?");
+                return filteredVersionMatch.Success ? filteredVersionMatch.Value : result;
             }
+        }
+
+        // TODO: should cache this
+        public static async Task<List<string>> GetVersionsList()
+        {
+            var resp = await HttpClient.GetAsync(Constants.BeatModsVersions);
+            var body = await resp.Content.ReadAsStringAsync();
+            List<string> versions = JsonSerializer.Deserialize<string[]>(body).ToList();
+
+            return versions;
+        }
+
+        // TODO: should cache this
+        public static async Task<Dictionary<string, string[]>> GetAliasDictionary()
+        {
+            var resp = await HttpClient.GetAsync(Constants.BeatModsAlias);
+            var body = await resp.Content.ReadAsStringAsync();
+            var aliases = JsonSerializer.Deserialize<Dictionary<string, string[]>>(body);
+
+            return aliases;
+        }
+
+        public static async Task<List<string>> GetAllPossibleVersions()
+        {
+            var versions = await GetVersionsList();
+            var aliases = await GetAliasDictionary();
+
+            return versions.Concat(aliases.SelectMany(x => x.Value)).ToList();
         }
 
         public static string GetOculusDir()

@@ -136,9 +136,9 @@ Do you want to continue?</sys:String>
         <Hyperlink local:HyperlinkExtensions.IsExternal="True" NavigateUri="https://bs.assistant.moe/Donate/">
             donation page
         </Hyperlink>
-        or my
-        <Hyperlink local:HyperlinkExtensions.IsExternal="True" NavigateUri="https://www.patreon.com/AssistantMoe">
-            Patreon
+        or the 
+        <Hyperlink local:HyperlinkExtensions.IsExternal="True" NavigateUri="https://www.patreon.com/beatsabermods">
+            BSMG Patreon
         </Hyperlink>
     </Span>
     <sys:String x:Key="About:SpecialThanks">Special Thanks ♥</sys:String>

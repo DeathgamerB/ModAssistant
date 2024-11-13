@@ -23,8 +23,8 @@ namespace ModAssistant
         public static string GameVersionDetected;  // the real game version detected from the game
         public static string GameVersionOverride;
         public TaskCompletionSource<bool> VersionLoadStatus = new TaskCompletionSource<bool>();
-        public static string[] serverList = { "国际源@BeatMods", "国内源@WGzeyu", "包子源@BeatTop" };
-        public static string[] assetsServerList = { "默认@default", "国内源@WGzeyu", "光剑中文社区源@BeatSaberChina" };
+        public static string[] serverList = { "国际源@BeatMods", "包子源@BeatTop" };
+        public static string[] assetsServerList = { "默认@default", "光剑中文社区源@BeatSaberChina" };
 
         public string MainText
         {
@@ -121,16 +121,10 @@ namespace ModAssistant
             try
             {
                 Utils.Constants.UpdateDownloadNode();
-                var resp = await HttpClient.GetAsync(Utils.Constants.BeatModsVersions);
-                var body = await resp.Content.ReadAsStringAsync();
-                List<string> versions = JsonSerializer.Deserialize<string[]>(body).ToList();
+                var versions = await Utils.GetVersionsList();
+                var aliases = await Utils.GetAliasDictionary();
 
-                resp = await HttpClient.GetAsync(Utils.Constants.BeatModsAlias);
-                body = await resp.Content.ReadAsStringAsync();
-                Dictionary<string, string[]> aliases = JsonSerializer.Deserialize<Dictionary<string, string[]>>(body);
-
-                string version = Utils.GetVersion();
-                GameVersionDetected = version;
+                string version = await Utils.GetVersion();
                 if (!versions.Contains(version) && CheckAliases(versions, aliases, version) == string.Empty)
                 {
                     versions.Insert(0, version);
