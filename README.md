@@ -1,5 +1,5 @@
 [![Mod Assistant](https://github.com/bsmg/ModAssistant/assets/27714637/e4c206b2-a890-4c52-aacf-5c96aebadbc2)](https://github.com/Assistant/ModAssistant/releases/latest)
-[![点我下载！Download here!](https://github.com/bsmg/ModAssistant/assets/27714637/aa836eb6-abaf-4d29-8add-eb021fa30bf3)](https://github.com/Assistant/ModAssistant/releases/latest)
+[![点我下载！Download here!](https://github.com/bsmg/ModAssistant/assets/27714637/aa836eb6-abaf-4d29-8add-eb021fa30bf3)](https://github.com/beatmods-top/ModAssistant/releases/latest)
 
 Mod Assistant 是节奏光剑(Beat Saber)PC版mod安装器。它使用来自[BeatMods](https://beatmods.com/)和[BeatMods.top](https://beatmods.top) (第三方源，镜像BeatMods.com并包含第三方上传插件)
 
