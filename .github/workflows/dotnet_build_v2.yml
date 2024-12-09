@@ -1,6 +1,7 @@
 name: .NET Build v2
 
 on:
+  workflow_dispatch:
   push:
   pull_request:
     branches:
