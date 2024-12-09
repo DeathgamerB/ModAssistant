@@ -55,19 +55,6 @@ namespace ModAssistant
 
             VersionText.Text = App.Version;
 
-            if (Utils.IsVoid())
-            {
-                Main.Content = Invalid.Instance;
-                Instance.ModsButton.IsEnabled = false;
-                Instance.OptionsButton.IsEnabled = false;
-                Instance.IntroButton.IsEnabled = false;
-                Instance.AboutButton.IsEnabled = false;
-                Instance.GameVersionsBox.IsEnabled = false;
-                System.Diagnostics.Process.Start("https://bs.wgzeyu.com/pc-guide/#bikeng_ziyuan");
-                System.Diagnostics.Process.Start("https://bs.wgzeyu.com/buy/#bs_steam");
-                return;
-            }
-
             Themes.LoadThemes();
             Themes.FirstLoad(Properties.Settings.Default.SelectedTheme);
 
